@@ -2,7 +2,7 @@ import React from 'react'
 
 class Card extends React.Component {
   render() {
-    return <div>Card+++++,test</div>
+    return <div>Card+++++,test,test,</div>
   }
 }
 
