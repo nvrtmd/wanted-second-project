@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import Item from '../../Components/Item/Item'
+import SaveDataToLocalStorage from '../../utils/SaveDataToLocalStorage'
+import GetDataFromLocalStorage from '../../utils/GetDataFromLocalStorage'
 
 const ProductsList = styled.div`
   width: 630px;
@@ -23,12 +25,16 @@ class List extends React.Component {
       .then((response) => {
         this.setState({ products: response })
       })
+      .catch(() => {
+        console.log('error!')
+      })
   }
 
   handleClick(product) {
     console.log(product.index)
     let data = []
-    data = JSON.parse(localStorage.getItem('watched')) || []
+    // data = JSON.parse(localStorage.getItem('watched')) || []
+    data = GetDataFromLocalStorage('watched') || []
     if (data) {
       // localstorage가 비어 있지 않으면 localstorage data 순회
       for (let i = 0; i < data.length; i++) {
@@ -43,7 +49,8 @@ class List extends React.Component {
             // 상세 페이지로 이동
             console.log('갱신')
             data[i] = product
-            localStorage.setItem('watched', JSON.stringify(data))
+            // localStorage.setItem('watched', JSON.stringify(data))
+            SaveDataToLocalStorage('watched', data)
             this.props.history.push({
               pathname: `/product/${product.index}`,
               state: { product },
