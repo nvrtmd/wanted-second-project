@@ -3,19 +3,7 @@ import styled from 'styled-components'
 import Header from '../../Components/Header/Header'
 import NavBar from '../../Components/NavBar/NavBar'
 import Item from '../../Components/Item/Item'
-
-const Root = styled.div`
-  display: flex;
-  justify-content: center;
-  background: #c0c0c0;
-  min-height: 100vh;
-`
-
-const Container = styled.div`
-  background: #fff;
-  width: 768px;
-  margin-bottom: 75px;
-`
+import { Link } from 'react-router-dom'
 
 const Products = styled.div`
   width: 630px;
@@ -38,12 +26,17 @@ class List extends React.Component {
 
   render() {
     return (
-      <Root>
-        <Container>
-          <Header />
-          <Products>
-            {this.state.products.map((product, index) => {
-              return (
+      <>
+        <Header />
+        <Products>
+          {this.state.products.map((product, index) => {
+            return (
+              <Link
+                to={`/product/${index}`}
+                onClick={() => {
+                  console.log(index)
+                }}
+              >
                 <Item
                   key={index}
                   item={{
@@ -52,12 +45,12 @@ class List extends React.Component {
                     price: product.price,
                   }}
                 />
-              )
-            })}
-          </Products>
-          <NavBar />
-        </Container>
-      </Root>
+              </Link>
+            )
+          })}
+        </Products>
+        <NavBar />
+      </>
     )
   }
 }
