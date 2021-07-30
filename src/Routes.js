@@ -15,7 +15,7 @@ class Routes extends React.Component {
             <Header />
             <Switch>
               <Route exact path={['/', '/list']} component={List} />
-              <Route exact path="/product" component={Product} />
+              <Route exact path="/product/:index" component={Product} />
               <Route exact path="/recentList" component={RecentList} />
             </Switch>
             <NavBar />
