@@ -9,6 +9,7 @@ class RecentList extends React.Component {
 
     this.state = {
       items: [],
+      selectedBrands: [],
     }
   }
 
@@ -25,17 +26,27 @@ class RecentList extends React.Component {
     })
   }
 
-  render() {
-    const { items } = this.state
-    const menuLists = [...new Set(items.map((item) => item.brand))]
+  selectBrand = ({ target: { value } }) => {
+    const { selectedBrands } = this.state
+    if (selectedBrands.includes(value)) return
 
+    this.setState({
+      selectedBrands: [...this.state.selectedBrands, value],
+    })
+  }
+
+  render() {
+    const { items, selectedBrands } = this.state
+    const menuLists = [...new Set(items.map((item) => item.brand))]
+    console.log(selectedBrands)
     return (
       <RecentListWrapper>
         <Title>
           <h2>최근 조회한 상품</h2>
         </Title>
         <BrandFilter>
-          <BrandMenu name="menus">
+          <BrandMenu name="menus" onChange={this.selectBrand}>
+            <option>BRAND</option>
             {menuLists.map((menu, index) => (
               <option key={index} value={menu}>
                 {menu}
@@ -43,9 +54,11 @@ class RecentList extends React.Component {
             ))}
           </BrandMenu>
           <SelectedBrand>
-            <Brand>
-              <span>스톤 아일랜드</span>
-            </Brand>
+            {selectedBrands?.map((selectedBrand) => (
+              <Brand>
+                <span>{selectedBrand}</span>
+              </Brand>
+            ))}
           </SelectedBrand>
         </BrandFilter>
         <DateFilter>
