@@ -44,7 +44,10 @@ class List extends React.Component {
             console.log('갱신')
             data[i] = product
             localStorage.setItem('watched', JSON.stringify(data))
-            this.props.history.push(`/product/${product.index}`)
+            this.props.history.push({
+              pathname: `/product/${product.index}`,
+              state: { product },
+            })
             return
           }
         }
@@ -54,14 +57,20 @@ class List extends React.Component {
       console.log('조회이력없음')
       data.push(product)
       localStorage.setItem('watched', JSON.stringify(data))
-      this.props.history.push(`/product/${product.index}`)
+      this.props.history.push({
+        pathname: `/product/${product.index}`,
+        state: { product },
+      })
       return
     }
     // localstorage 비어있다면
-    // 클릭한 상품 정보 localstorage에 저장 및
+    // 클릭한 상품 정보 localstorage에 저장 및 상세 페이지로 이동
     data.push(product)
     localStorage.setItem('watched', JSON.stringify(data))
-    this.props.history.push(`/product/${product.index}`)
+    this.props.history.push({
+      pathname: `/product/${product.index}`,
+      state: { product },
+    })
   }
 
   render() {
