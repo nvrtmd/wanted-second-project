@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import Item from '../../Components/Item/Item'
+import Item from 'Components/Item/Item'
 
 const ProductsList = styled.div`
   width: 630px;
