@@ -1,7 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import Header from '../../Components/Header/Header'
-import NavBar from '../../Components/NavBar/NavBar'
 import Item from '../../Components/Item/Item'
 import { Link } from 'react-router-dom'
 
@@ -14,6 +12,7 @@ class List extends React.Component {
   constructor(props) {
     super(props)
     this.state = { products: [] }
+    this.handleClick = this.handleClick.bind(this)
   }
 
   componentDidMount() {
@@ -24,21 +23,38 @@ class List extends React.Component {
       })
   }
 
+  handleClick(product) {
+    console.log(product)
+    let data = []
+    data = JSON.parse(localStorage.getItem('watched')) || []
+    console.log(data)
+    data.push(product)
+    localStorage.setItem('watched', JSON.stringify(data))
+    // localStorage.clear()
+  }
+
   render() {
     return (
       <>
-        <Header />
         <Products>
           {this.state.products.map((product, index) => {
             return (
               <Link
                 to={`/product/${index}`}
                 onClick={() => {
-                  console.log(index)
+                  const date = new Date()
+                  this.handleClick({
+                    index: index,
+                    title: product.title,
+                    brand: product.brand,
+                    price: product.price,
+                    date: date,
+                    interest: true,
+                  })
                 }}
+                key={index}
               >
                 <Item
-                  key={index}
                   item={{
                     title: product.title,
                     brand: product.brand,
@@ -49,7 +65,6 @@ class List extends React.Component {
             )
           })}
         </Products>
-        <NavBar />
       </>
     )
   }

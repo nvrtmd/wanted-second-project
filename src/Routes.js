@@ -4,6 +4,8 @@ import styled from 'styled-components'
 import List from './Pages/List/List'
 import Product from './Pages/Product/Product'
 import RecentList from './Pages/RecentList/RecentList'
+import NavBar from './Components/NavBar/NavBar'
+import Header from './Components/Header/Header'
 
 const Root = styled.div`
   display: flex;
@@ -24,9 +26,11 @@ class Routes extends React.Component {
         <Switch>
           <Root>
             <Container>
+              <Header />
               <Route exact path={['/', '/list']} component={List} />
               <Route exact path="/product" component={Product} />
               <Route exact path="/recentList" component={RecentList} />
+              <NavBar />
             </Container>
           </Root>
         </Switch>
