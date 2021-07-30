@@ -4,43 +4,41 @@ import Header from 'Components/Header/Header'
 import NavBar from 'Components/NavBar/NavBar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRandom } from '@fortawesome/free-solid-svg-icons'
+
+const LIMIT = 100
 class Product extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { wholeProducts: [], product: [] }
+    this.state = { wholeProducts: [], products: [] }
     this.addDislikeProduct = this.addDislikeProduct.bind(this)
     this.getRandomProduct = this.getRandomProduct.bind(this)
   }
+
   componentDidMount() {
     fetch('http://localhost:3000/Data/data.json')
       .then((response) => response.json())
       .then((response) => {
         this.setState({ wholeProducts: response })
       })
-      .catch((e) => {
-        console.log('error!')
-        console.log(e)
-      })
   }
 
   genRandomNumber() {
-    const num = Math.floor(Math.random() * 101)
+    const num = Math.floor(Math.random() * LIMIT)
     return num
   }
+
   checkRandomNumber(num) {
-    let result = true
     let data = []
     data = JSON.parse(localStorage.getItem('watched')) || []
     console.log('checking ' + num)
     for (let i = 0; i < data.length; i++) {
       if (data[i].index === num) {
         if (!data[i].interest) {
-          //관심 없는 경우
-          result = false
+          return false
         }
       }
     }
-    return result
+    return true
   }
 
   setInterest(num) {
@@ -60,29 +58,81 @@ class Product extends React.Component {
         data[i] = newProduct
         localStorage.setItem('watched', JSON.stringify(data))
       }
-    }
+    } //for
+    return false
   }
 
   //[관심없어요] 버튼 누를 시 동작
-  addDislikeProduct(index) {
+  addDislikeProduct(product, index) {
     console.log(`add ${index} dislike`)
-    // interest false로 변경
-    this.setInterest(index)
-    // 랜덤 상품으로 이동
     alert('해당 상품을 앞으로 다시 보지 않습니다.')
-    this.getRandomProduct()
+    // 랜덤 상품으로 이동
+    let interestResult = this.setInterest(index)
+    this.getRandomProduct(product, index, interestResult)
   }
 
-  getRandomProduct() {
-    console.log('get Random Product')
-    // 난수 생성하기
-    const randomNumber = this.genRandomNumber()
-    //생성된 난수가 not interest인지 확인
-    if (this.checkRandomNumber(randomNumber)) {
-      // 확인 후 이동
-      // window.location.href = `/product/${randomNumber}`
-      this.props.history.push(`/product/${randomNumber}`)
+  //해당 상품 페이지에 방문했을 시, LS에 저장
+  addWatchedLocalStorage(product, index, interestResult) {
+    if (interestResult === undefined) {
+      interestResult = true
     }
+    let data = []
+    data = JSON.parse(localStorage.getItem('watched')) || []
+
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].index == index) {
+        //조회 이력이 있다면
+        const newDate = new Date()
+        data[i].date = newDate
+        data[i].interest = interestResult
+        localStorage.setItem('watched', JSON.stringify(data))
+        return
+      } // if
+    } //for
+    //조회 이력이 없다면 추가
+    const newDate = new Date()
+    let newProduct = {
+      index: index,
+      title: product.title,
+      brand: product.brand,
+      price: product.price,
+      date: newDate,
+      interest: interestResult,
+    }
+    data.push(newProduct)
+    localStorage.setItem('watched', JSON.stringify(data))
+  }
+
+  moveToOtherProduct(randomNumber) {
+    let num = randomNumber
+    let checkResult = this.checkRandomNumber(num)
+    if (checkResult) {
+      // 확인 후 이동
+      this.props.history.push(`/product/${num}`)
+    } else {
+      let cnt = 0
+      while (cnt < LIMIT + 1) {
+        num = this.genRandomNumber()
+        checkResult = this.checkRandomNumber(num)
+        if (checkResult == true) {
+          this.props.history.push(`/product/${num}`)
+          return
+        }
+        cnt++
+      }
+      alert("모든 상품이 '관심없음' 처리 되어있습니다ㅠㅠ")
+      this.props.history.push(`/`)
+    }
+  }
+
+  // 랜덤 상품 페이지로 이동
+  getRandomProduct(product, index, interestResult) {
+    // 이동하기 전, watched LS에 저장하기
+    this.addWatchedLocalStorage(product, index, interestResult)
+
+    //난수 생성하여 그 index의 product로 이동
+    const randomNumber = this.genRandomNumber()
+    this.moveToOtherProduct(randomNumber)
   }
 
   render() {
@@ -101,14 +151,14 @@ class Product extends React.Component {
                   <Price>{product.price} 원</Price>
                   <Random
                     onClick={() => {
-                      this.getRandomProduct()
+                      this.getRandomProduct(product, index)
                     }}
                   >
                     <FontAwesomeIcon icon={faRandom} />
                   </Random>
                   <Dislike
                     onClick={() => {
-                      this.addDislikeProduct(product.index)
+                      this.addDislikeProduct(product, index)
                     }}
                   >
                     관심 없어요
@@ -121,27 +171,6 @@ class Product extends React.Component {
           )
         })}
 
-        {/* <ProductContainer>
-          <ProductTitle>{product.title}</ProductTitle>
-          <ProductBrand>{product.brand}</ProductBrand>
-          <Wrapper>
-            <Price>{product.price} 원</Price>
-            <Random
-              onClick={() => {
-                this.getRandomProduct()
-              }}
-            >
-              <FontAwesomeIcon icon={faRandom} />
-            </Random>
-            <Dislike
-              onClick={() => {
-                this.addDislikeProduct(product.index)
-              }}
-            >
-              관심 없어요
-            </Dislike>
-          </Wrapper>
-        </ProductContainer> */}
         <NavBar />
       </Container>
     )
