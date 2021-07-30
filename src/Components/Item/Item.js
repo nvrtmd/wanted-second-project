@@ -21,7 +21,8 @@ export default Item
 const ItemWrapper = styled.li`
   margin: 36px 0;
   padding: 34px;
-  width: 630px;
+  width: 100%;
+  min-width: 630px;
   border: 5px solid #2d3ff3;
   border-radius: 15px;
   background: #ffffff;
