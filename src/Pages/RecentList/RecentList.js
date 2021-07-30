@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Item from '../../Components/Item/Item'
+import GetDataFromLocalStorage from '../../utils/GetDataFromLocalStorage'
 import { ReactComponent as SortImage } from '../../SvgImages/sort.svg'
 
 class RecentList extends React.Component {
@@ -10,16 +11,13 @@ class RecentList extends React.Component {
     this.state = {
       items: [],
       selectedBrands: [],
+      selectedSorting: '최근 조회순',
+      isSelectedHiding: false,
     }
   }
 
   componentDidMount() {
-    this.requestData()
-  }
-
-  requestData = async () => {
-    const response = await fetch('/Data/data.json')
-    const itemData = await response.json()
+    const itemData = GetDataFromLocalStorage('watched')
 
     this.setState({
       items: itemData,
@@ -35,10 +33,56 @@ class RecentList extends React.Component {
     })
   }
 
+  deleteSelectedBrand = ({ target: { name } }) => {
+    const { selectedBrands } = this.state
+    if (!selectedBrands.includes(name)) return
+
+    this.setState({
+      selectedBrands: selectedBrands.filter((brand) => brand !== name),
+    })
+  }
+
+  selectSorting = ({ target: { value } }) => {
+    this.setState({
+      selectedSorting: value,
+    })
+  }
+
+  selectHiding = () => {
+    const { isClickedHiding } = this.state
+    this.setState({
+      isClickedHiding: !isClickedHiding,
+    })
+  }
+
   render() {
-    const { items, selectedBrands } = this.state
+    const { items, selectedBrands, selectedSorting, isSelectedHiding } =
+      this.state
     const menuLists = [...new Set(items.map((item) => item.brand))]
-    console.log(selectedBrands)
+    const selectedItems = items.filter((item) =>
+      selectedBrands.includes(item.brand)
+    )
+    const sortedItems =
+      selectedItems.length > 0
+        ? selectedItems.sort((item1, item2) => {
+            if (selectedSorting === '최근 조회순') {
+              if (item1.date > item2.date) {
+                return -1
+              }
+            } else {
+              return item1.price - item2.price
+            }
+          })
+        : items.sort((item1, item2) => {
+            if (selectedSorting === '최근 조회순') {
+              if (item1.date > item2.date) {
+                return -1
+              }
+            } else {
+              return item1.price - item2.price
+            }
+          })
+
     return (
       <RecentListWrapper>
         <Title>
@@ -57,23 +101,32 @@ class RecentList extends React.Component {
             {selectedBrands?.map((selectedBrand) => (
               <Brand>
                 <span>{selectedBrand}</span>
+                <button name={selectedBrand} onClick={this.deleteSelectedBrand}>
+                  x
+                </button>
               </Brand>
             ))}
           </SelectedBrand>
         </BrandFilter>
         <DateFilter>
           <SortImage />
-          <select>
+          <select onChange={this.selectSorting}>
             <option>최근 조회순</option>
             <option>낮은 가격순</option>
           </select>
         </DateFilter>
         <LikeFilter>
           <span>관심 없는 상품 숨기기</span>
-          <input type="checkbox" />
+          <input type="checkbox" onChange={this.selectHiding} />
         </LikeFilter>
         <ItemContainer>
-          <Item item={{ title: 'hihi', brand: 'fe', price: 20000 }} />
+          {isSelectedHiding
+            ? sortedItems
+                .filter((item) => item.interest)
+                .map((item, index) => <Item key={index} item={item} />)
+            : sortedItems.map((item, index) => (
+                <Item key={index} item={item} />
+              ))}
         </ItemContainer>
       </RecentListWrapper>
     )
@@ -129,6 +182,16 @@ const Brand = styled.div`
   font-size: 20px;
   font-weight: bold;
   line-height: 20px;
+
+  button {
+    margin-left: 5px;
+    font-size: 30px;
+    line-height: 20px;
+
+    :hover {
+      color: #2d3ff3;
+    }
+  }
 `
 
 const DateFilter = styled.div`
