@@ -28,7 +28,7 @@ class Routes extends React.Component {
             <Container>
               <Header />
               <Route exact path={['/', '/list']} component={List} />
-              <Route exact path="/product" component={Product} />
+              <Route exact path="/product/:seq" component={Product} />
               <Route exact path="/recentList" component={RecentList} />
               <NavBar />
             </Container>
