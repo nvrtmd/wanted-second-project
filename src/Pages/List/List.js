@@ -4,14 +4,6 @@ import Item from '../../Components/Item/Item'
 import SaveDataToLocalStorage from '../../utils/SaveDataToLocalStorage'
 import GetDataFromLocalStorage from '../../utils/GetDataFromLocalStorage'
 
-const ProductsList = styled.div`
-  width: 630px;
-  margin: 0 auto;
-`
-const Product = styled.div`
-  cursor: pointer;
-`
-
 class List extends React.Component {
   constructor(props) {
     super(props)
@@ -123,3 +115,11 @@ class List extends React.Component {
 }
 
 export default List
+
+const ProductsList = styled.div`
+  width: 630px;
+  margin: 0 auto;
+`
+const Product = styled.div`
+  cursor: pointer;
+`
