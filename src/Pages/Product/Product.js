@@ -172,6 +172,7 @@ class Product extends React.Component {
     )
   }
 }
+
 const PageTitle = styled.div`
   margin-top: 30px;
   margin-left: 68px;
