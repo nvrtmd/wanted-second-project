@@ -24,6 +24,8 @@ function timer() {
 
       if (isCorrectedTime && !isChecked) {
         SaveDataToLocalStorage('watched', null)
+        SaveDataToLocalStorage('interested', null)
+        SaveDataToLocalStorage('numOfVisitableProduct', null)
         isChecked = true
       }
     } else {
