@@ -5,11 +5,12 @@ import SaveDataToLocalStorage from '../../utils/SaveDataToLocalStorage'
 import GetDataFromLocalStorage from '../../utils/GetDataFromLocalStorage'
 import MoveAfterVisit from '../../utils/MoveAfterVisit'
 import {
+  FETCH_ERROR_MESSAGE,
   PRODUCT_CNT_LIMIT,
   ALERT_NO_MORE_RANDOM_PRODUCT,
   ALERT_NO_MORE_RANDOM_PRODUCT_EXCEPT_CURRENT,
 } from 'constant'
-import { BASE_URL } from 'config'
+import { BASE_URL, PRODUCT_URL } from 'config'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRandom } from '@fortawesome/free-solid-svg-icons'
 
@@ -26,6 +27,9 @@ class Product extends React.Component {
       .then((response) => response.json())
       .then((response) => {
         this.setState({ wholeProducts: response })
+      })
+      .catch(() => {
+        console.log(FETCH_ERROR_MESSAGE)
       })
 
     if (
@@ -93,7 +97,7 @@ class Product extends React.Component {
             // 해당 상품 상세 페이지로 방문
             const newDate = new Date()
             data[i].date = newDate
-            MoveAfterVisit(data, `/product/${randomNum}`, this.props)
+            MoveAfterVisit(data, `${PRODUCT_URL}/${randomNum}`, this.props)
             return
           } else {
             // randomNum을 index로 가지는 상품의 조회 내역 존재하며
@@ -111,7 +115,7 @@ class Product extends React.Component {
       const tempObj = { index: randomNum, date: date, interest: true }
       const product = Object.assign(tempObj, newProduct)
       data.push(product)
-      MoveAfterVisit(data, `/product/${randomNum}`, this.props)
+      MoveAfterVisit(data, `${PRODUCT_URL}/${randomNum}`, this.props)
       return
     }
   }

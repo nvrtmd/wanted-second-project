@@ -3,7 +3,11 @@ import styled from 'styled-components'
 import Item from 'Components/Item/Item'
 import GetDataFromLocalStorage from 'utils/GetDataFromLocalStorage'
 import MoveAfterVisit from 'utils/MoveAfterVisit'
-import { FETCH_ERROR_MESSAGE, ALERT_NOT_INTERESTING_PRODUCT } from 'constant'
+import {
+  FETCH_ERROR_MESSAGE,
+  ALERT_NOT_INTERESTING_PRODUCT,
+  WATCHED,
+} from 'constant'
 import { BASE_URL } from 'config'
 
 class List extends React.Component {
@@ -26,7 +30,7 @@ class List extends React.Component {
 
   handleClick(product) {
     let data = []
-    data = GetDataFromLocalStorage('watched') || []
+    data = GetDataFromLocalStorage(WATCHED) || []
     if (data) {
       // 상품 조회 이력이 존재한다면
       for (let i = 0; i < data.length; i++) {
