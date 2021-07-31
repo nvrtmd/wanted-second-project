@@ -9,6 +9,7 @@ const Root = styled.div`
   display: flex;
   justify-content: space-between;
   border-top: solid 0.5px #000;
+  background-color: #fff;
 `
 
 const Box = styled.div`
@@ -25,7 +26,7 @@ class NavBar extends React.Component {
   render() {
     return (
       <Root>
-        <Link to="/">
+        <Link to="/about">
           <Box>
             <MenuImg src="https://ifh.cc/g/GPTkLn.png" />
             <p>ABOUT</p>
