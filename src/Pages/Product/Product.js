@@ -4,10 +4,13 @@ import Item from '../../Components/Item/Item'
 import SaveDataToLocalStorage from '../../utils/SaveDataToLocalStorage'
 import GetDataFromLocalStorage from '../../utils/GetDataFromLocalStorage'
 import MoveAfterVisit from '../../utils/MoveAfterVisit'
+import {
+  PRODUCT_CNT_LIMIT,
+  ALERT_NO_MORE_RANDOM_PRODUCT,
+  ALERT_NO_MORE_RANDOM_PRODUCT_EXCEPT_CURRENT,
+} from 'constant'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRandom } from '@fortawesome/free-solid-svg-icons'
-
-const LIMIT = 100
 
 class Product extends React.Component {
   constructor(props) {
@@ -28,13 +31,13 @@ class Product extends React.Component {
       !GetDataFromLocalStorage('numOfVisitableProduct') &&
       !GetDataFromLocalStorage('interested')
     ) {
-      SaveDataToLocalStorage('numOfVisitableProduct', LIMIT)
-      SaveDataToLocalStorage('interested', LIMIT)
+      SaveDataToLocalStorage('numOfVisitableProduct', PRODUCT_CNT_LIMIT)
+      SaveDataToLocalStorage('interested', PRODUCT_CNT_LIMIT)
     }
-  }
+  } //componentDidMount
 
   genRandomNumber() {
-    const num = Math.floor(Math.random() * LIMIT)
+    const num = Math.floor(Math.random() * PRODUCT_CNT_LIMIT)
     return num
   }
 
@@ -50,7 +53,7 @@ class Product extends React.Component {
       }
     }
     if (interested === 1) {
-      alert(`모든 상품이 '관심없음' 처리 되어 있습니다.`)
+      alert(ALERT_NO_MORE_RANDOM_PRODUCT)
       this.props.history.push({
         pathname: `/`,
       })
@@ -65,7 +68,7 @@ class Product extends React.Component {
     let interested = GetDataFromLocalStorage('interested')
 
     if (numOfVisitableProduct <= 1) {
-      alert(`해당 상품 외 모든 상품이 '관심 없는 상품'입니다.`)
+      alert(ALERT_NO_MORE_RANDOM_PRODUCT_EXCEPT_CURRENT)
       return
     }
     SaveDataToLocalStorage('numOfVisitableProduct', interested)
