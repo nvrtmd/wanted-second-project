@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import Item from '../../Components/Item/Item'
-import SaveDataToLocalStorage from '../../utils/SaveDataToLocalStorage'
 import GetDataFromLocalStorage from '../../utils/GetDataFromLocalStorage'
+import MoveAfterVisit from '../../utils/MoveAfterVisit'
 
 class List extends React.Component {
   constructor(props) {
@@ -24,10 +24,9 @@ class List extends React.Component {
 
   handleClick(product) {
     let data = []
-    // data = JSON.parse(localStorage.getItem('watched')) || []
     data = GetDataFromLocalStorage('watched') || []
     if (data) {
-      // localstorage가 비어 있지 않으면 localstorage data 순회
+      // 상품 조회 이력이 존재한다면
       for (let i = 0; i < data.length; i++) {
         if (data[i].index === product.index) {
           // 이미 한 번 조회한 이력이 존재하는 상품이라면
@@ -40,47 +39,28 @@ class List extends React.Component {
             // 상세 페이지로 이동
             console.log('갱신')
             data[i].date = product.date
-            SaveDataToLocalStorage('watched', data)
-            this.props.history.push({
-              pathname: `/product/${product.index}`,
-              state: { product },
-            })
+            MoveAfterVisit(data, `/product/${product.index}`, this.props)
             return
           }
         }
       }
       // 조회 이력이 없는 상품이라면
-      // 해당 상품 정보 localstorage에 저장 및 상세 페이지로 이동
+      // 해당 상품 정보 LocalStorage에 저장(조회 처리) 및 상세 페이지로 이동
       console.log('조회이력없음')
       data.push(product)
-      SaveDataToLocalStorage('watched', data)
-      this.props.history.push({
-        pathname: `/product/${product.index}`,
-        state: { product },
-      })
+      MoveAfterVisit(data, `/product/${product.index}`, this.props)
       return
     }
-    // localstorage 비어있다면
-    // 클릭한 상품 정보 localstorage에 저장 및 상세 페이지로 이동 (index 및 날짜 정보 추가해서)
+    // LocalStorage 비어있다면
+    // 클릭한 상품 정보 LocalStorage에 저장(조회 처리) 및 상세 페이지로 이동 (index 및 날짜 정보 추가해서)
     data.push(product)
-    SaveDataToLocalStorage('watched', data)
-    this.props.history.push({
-      pathname: `/product/${product.index}`,
-      state: { product },
-    })
+    MoveAfterVisit(data, `/product/${product.index}`, this.props)
   }
 
   render() {
     console.log(this.state.products)
     return (
       <>
-        <div
-          onClick={() => {
-            localStorage.clear()
-          }}
-        >
-          초기화
-        </div>
         <ProductsList>
           {this.state.products.map((product, index) => {
             return (
@@ -114,12 +94,13 @@ class List extends React.Component {
   }
 }
 
-export default List
-
 const ProductsList = styled.div`
   width: 630px;
   margin: 0 auto;
 `
+
 const Product = styled.div`
   cursor: pointer;
 `
+
+export default List
