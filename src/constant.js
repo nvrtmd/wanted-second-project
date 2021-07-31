@@ -16,5 +16,7 @@ export const ALERT_NO_MORE_RANDOM_PRODUCT_EXCEPT_CURRENT =
 
 //로컬스토리지 키 값
 export const WATCHED = 'watched'
+export const NUM_OF_VISITABLE_PRODUCT = 'numOfVisitableProduct'
+export const INTERESTED = 'interested'
 
 export const PRODUCT_CNT_LIMIT = 100

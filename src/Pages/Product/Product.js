@@ -6,6 +6,8 @@ import GetDataFromLocalStorage from '../../utils/GetDataFromLocalStorage'
 import MoveAfterVisit from '../../utils/MoveAfterVisit'
 import {
   FETCH_ERROR_MESSAGE,
+  NUM_OF_VISITABLE_PRODUCT,
+  INTERESTED,
   PRODUCT_CNT_LIMIT,
   ALERT_NO_MORE_RANDOM_PRODUCT,
   ALERT_NO_MORE_RANDOM_PRODUCT_EXCEPT_CURRENT,
@@ -33,11 +35,11 @@ class Product extends React.Component {
       })
 
     if (
-      !GetDataFromLocalStorage('numOfVisitableProduct') &&
-      !GetDataFromLocalStorage('interested')
+      !GetDataFromLocalStorage(NUM_OF_VISITABLE_PRODUCT) &&
+      !GetDataFromLocalStorage(INTERESTED)
     ) {
-      SaveDataToLocalStorage('numOfVisitableProduct', PRODUCT_CNT_LIMIT)
-      SaveDataToLocalStorage('interested', PRODUCT_CNT_LIMIT)
+      SaveDataToLocalStorage(NUM_OF_VISITABLE_PRODUCT, PRODUCT_CNT_LIMIT)
+      SaveDataToLocalStorage(INTERESTED, PRODUCT_CNT_LIMIT)
     }
   } //componentDidMount
 
