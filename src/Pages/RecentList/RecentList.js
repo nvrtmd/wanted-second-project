@@ -54,15 +54,28 @@ class RecentList extends React.Component {
     })
   }
 
-  moveToProductPage = ({ target }) => {
+  getClickedItem = (target) => {
     const idArr = []
     const index = getClickedNodeId(target, idArr)
 
     if (!index) return
 
     const { items } = this.state
-    const { history } = this.props
     const selectedItem = items.find((item) => item.index === index[0])
+
+    return selectedItem
+  }
+
+  moveToProductPage = ({ target }) => {
+    const { history } = this.props
+    const selectedItem = this.getClickedItem(target)
+
+    if (!selectedItem) return
+
+    if (!selectedItem.interest) {
+      alert('관심이 없는 상품입니다!')
+      return
+    }
 
     history.push({
       pathname: `/product/${selectedItem.index}`,
@@ -97,6 +110,8 @@ class RecentList extends React.Component {
               return item1.price - item2.price
             }
           })
+
+    console.log(sortedItems)
 
     return items ? (
       <RecentListWrapper>
