@@ -1,10 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faRandom } from '@fortawesome/free-solid-svg-icons'
+import Item from '../../Components/Item/Item'
 import SaveDataToLocalStorage from '../../utils/SaveDataToLocalStorage'
 import GetDataFromLocalStorage from '../../utils/GetDataFromLocalStorage'
 import MoveAfterVisit from '../../utils/MoveAfterVisit'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faRandom } from '@fortawesome/free-solid-svg-icons'
 
 const LIMIT = 100
 
@@ -116,14 +117,18 @@ class Product extends React.Component {
     return (
       <>
         <PageTitle>상세 상품 페이지</PageTitle>
-        {this.state.wholeProducts.map((product, index) => {
-          return index === Number.parseInt(params.index) ? (
-            <div key={index}>
-              <ProductContainer>
-                <ProductTitle>{product.title}</ProductTitle>
-                <ProductBrand>{product.brand}</ProductBrand>
-                <Wrapper>
-                  <Price>{product.price} 원</Price>
+        <ProductsList>
+          {this.state.wholeProducts.map((product, index) => {
+            return index === Number.parseInt(params.index) ? (
+              <div key={index}>
+                <Item
+                  item={{
+                    title: product.title,
+                    brand: product.brand,
+                    price: product.price,
+                  }}
+                />
+                <ButtonContainer>
                   <Random
                     onClick={() => {
                       this.getRandomProduct(product, index)
@@ -138,60 +143,46 @@ class Product extends React.Component {
                   >
                     관심 없어요
                   </Dislike>
-                </Wrapper>
-              </ProductContainer>
-            </div>
-          ) : (
-            <span key={index}></span>
-          )
-        })}
+                </ButtonContainer>
+              </div>
+            ) : (
+              <span key={index}></span>
+            )
+          })}
+        </ProductsList>
       </>
     )
   }
 }
+
 const PageTitle = styled.div`
   margin-top: 30px;
   margin-left: 68px;
   font-size: 36px;
   font-weight: bold;
 `
-const ProductContainer = styled.div`
-  width: 630px;
-  margin: 0 auto;
-  margin-top: calc((100vh - 300px) / 4);
-  padding: 52px 34px;
-  border: 4px solid #2d3ff3;
-  border-radius: 15px;
-`
-const ProductTitle = styled.div`
-  font-size: 32px;
-  font-weight: bold;
-`
-const ProductBrand = styled.div`
-  margin-top: 6px;
-  font-size: 26px;
-  color: #696969;
-`
-const Wrapper = styled.div`
+
+const ButtonContainer = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 21px;
+  justify-content: space-around;
 `
-const Price = styled.div`
-  font-size: 30px;
+
+const ProductsList = styled.div`
+  margin: calc((100vh - 300px) / 4) 69px;
 `
+
 const Random = styled.button`
   color: #2d3ff3;
-  font-size: 30px;
-  margin-left: 160px;
+  font-size: 60px;
 `
+
 const Dislike = styled.button`
-  width: 175px;
-  padding: 8px;
+  width: 180px;
+  padding: 15px;
   background-color: #2d3ff3;
   color: white;
-  font-size: 26px;
+  font-size: 27px;
   border-radius: 15px;
 `
+
 export default Product

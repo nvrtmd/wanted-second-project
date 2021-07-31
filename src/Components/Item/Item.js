@@ -9,7 +9,7 @@ class Item extends React.Component {
         <ItemTitle>{title}</ItemTitle>
         <ItemDetail>
           <span>{brand}</span>
-          <span>{price}</span>
+          <span>{price}원</span>
         </ItemDetail>
       </ItemWrapper>
     )

@@ -94,12 +94,13 @@ class List extends React.Component {
   }
 }
 
-export default List
-
 const ProductsList = styled.div`
   width: 630px;
   margin: 0 auto;
 `
+
 const Product = styled.div`
   cursor: pointer;
 `
+
+export default List
