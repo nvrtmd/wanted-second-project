@@ -131,14 +131,14 @@ class Product extends React.Component {
                 <ButtonContainer>
                   <Random
                     onClick={() => {
-                      this.getRandomProduct(product, index)
+                      this.getRandomProduct()
                     }}
                   >
                     <FontAwesomeIcon icon={faRandom} />
                   </Random>
                   <Dislike
                     onClick={() => {
-                      this.addDislikeProduct(product, index)
+                      this.addDislikeProduct(index)
                     }}
                   >
                     관심 없어요
