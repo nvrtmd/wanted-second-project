@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import Item from '../../Components/Item/Item'
-import GetDataFromLocalStorage from '../../utils/GetDataFromLocalStorage'
-import MoveAfterVisit from '../../utils/MoveAfterVisit'
+import Item from 'Components/Item/Item'
+import GetDataFromLocalStorage from 'utils/GetDataFromLocalStorage'
+import MoveAfterVisit from 'utils/MoveAfterVisit'
+import { FETCH_ERROR_MESSAGE, NOT_INTERESTED_MESSAGE } from 'constant'
 
 class List extends React.Component {
   constructor(props) {
@@ -12,13 +13,13 @@ class List extends React.Component {
   }
 
   componentDidMount() {
-    fetch('Data/data.json')
+    fetch('http://localhost:3000/Data/data.json')
       .then((response) => response.json())
       .then((response) => {
         this.setState({ products: response })
       })
       .catch(() => {
-        console.log('error!')
+        console.log(FETCH_ERROR_MESSAGE)
       })
   }
 
@@ -32,12 +33,11 @@ class List extends React.Component {
           // 이미 한 번 조회한 이력이 존재하는 상품이라면
           if (data[i].interest === false) {
             // '관심 없음' 상품이라면 alert
-            alert('관심 없는 상품입니다.')
+            alert(NOT_INTERESTED_MESSAGE)
             return
           } else {
             // '관심 없음' 상품이 아니라면 조회 시간 및 날짜 갱신
             // 상세 페이지로 이동
-            console.log('갱신')
             data[i].date = product.date
             MoveAfterVisit(data, `/product/${product.index}`, this.props)
             return
@@ -46,7 +46,6 @@ class List extends React.Component {
       }
       // 조회 이력이 없는 상품이라면
       // 해당 상품 정보 LocalStorage에 저장(조회 처리) 및 상세 페이지로 이동
-      console.log('조회이력없음')
       data.push(product)
       MoveAfterVisit(data, `/product/${product.index}`, this.props)
       return
@@ -58,9 +57,9 @@ class List extends React.Component {
   }
 
   render() {
-    console.log(this.state.products)
     return (
       <>
+        <PageTitle>전체 상품 목록</PageTitle>
         <ProductsList>
           {this.state.products.map((product, index) => {
             return (
@@ -93,6 +92,14 @@ class List extends React.Component {
     )
   }
 }
+
+const PageTitle = styled.div`
+  margin-top: 30px;
+  padding-left: 68px;
+  font-size: 36px;
+  font-weight: bold;
+  width: 100%;
+`
 
 const ProductsList = styled.div`
   width: 630px;
