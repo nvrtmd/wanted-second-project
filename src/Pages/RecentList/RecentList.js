@@ -5,7 +5,7 @@ import GetDataFromLocalStorage from '../../utils/GetDataFromLocalStorage'
 import { ReactComponent as SortImage } from '../../SvgImages/sort.svg'
 import {
   RECENT_ORDER,
-  NOT_INTERESTING_PRODUCT_MESSAGE,
+  ALERT_NOT_INTERESTING_PRODUCT,
   WATCHED,
 } from '../../constant'
 import { PRODUCT_URL } from '../../config'
@@ -88,7 +88,7 @@ class RecentList extends React.Component {
     if (!selectedItem) return
 
     if (!selectedItem.interest) {
-      alert(NOT_INTERESTING_PRODUCT_MESSAGE)
+      alert(ALERT_NOT_INTERESTING_PRODUCT)
       return
     }
 
@@ -125,8 +125,6 @@ class RecentList extends React.Component {
               return item1.price - item2.price
             }
           })
-
-    console.log(sortedItems)
 
     return items ? (
       <RecentListWrapper>
