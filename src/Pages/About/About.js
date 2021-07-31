@@ -1,18 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
-import Header from 'Components/Header/Header'
-import NavBar from 'Components/NavBar/NavBar'
+
 class About extends React.Component {
   render() {
     return (
       <>
-        <Header />
         <Container>
           <h1>[Assignment 2] 미스터카멜</h1>
           <Introduce>민유지, 백진수, 문태웅, 최혜린</Introduce>
           <div>made with 💙</div>
         </Container>
-        <NavBar />
       </>
     )
   }

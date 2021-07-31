@@ -1,7 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import Header from 'Components/Header/Header'
-import NavBar from 'Components/NavBar/NavBar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRandom } from '@fortawesome/free-solid-svg-icons'
 
@@ -140,7 +138,6 @@ class Product extends React.Component {
     const { params } = this.props.match
     return (
       <>
-        <Header />
         <PageTitle>상세 상품 페이지</PageTitle>
         {this.state.wholeProducts.map((product, index) => {
           return index === Number.parseInt(params.index) ? (
@@ -171,7 +168,6 @@ class Product extends React.Component {
             <span key={index}></span>
           )
         })}
-        <NavBar />
       </>
     )
   }
