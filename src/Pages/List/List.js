@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Item from 'Components/Item/Item'
 import GetDataFromLocalStorage from 'utils/GetDataFromLocalStorage'
 import MoveAfterVisit from 'utils/MoveAfterVisit'
-import { FETCH_ERROR_MESSAGE, NOT_INTERESTED_MESSAGE } from 'constant'
+import { FETCH_ERROR_MESSAGE, ALERT_NOT_INTERESTING_PRODUCT } from 'constant'
 import { BASE_URL } from 'config'
 
 class List extends React.Component {
@@ -34,7 +34,7 @@ class List extends React.Component {
           // 이미 한 번 조회한 이력이 존재하는 상품이라면
           if (data[i].interest === false) {
             // '관심 없음' 상품이라면 alert
-            alert(NOT_INTERESTED_MESSAGE)
+            alert(ALERT_NOT_INTERESTING_PRODUCT)
             return
           } else {
             // '관심 없음' 상품이 아니라면 조회 시간 및 날짜 갱신

@@ -4,18 +4,15 @@
 export const FETCH_ERROR_MESSAGE =
   'Failed to fetch data, please check your API or internet connection'
 
-//alert 메시지
-export const NOT_INTERESTED_MESSAGE = '❌ 관심 없는 상품입니다. ❌'
-
 //아이템 정렬 순서
 export const RECENT_ORDER = '최근 조회순'
 
 //alert 메시지
-export const ALERT_NOT_INTERESTING_PRODUCT = '관심이 없는 상품입니다!'
+export const ALERT_NOT_INTERESTING_PRODUCT = '❌ 관심 없는 상품입니다. ❌'
 export const ALERT_NO_MORE_RANDOM_PRODUCT =
-  "모든 상품이 '관심없음' 처리 되어 있습니다."
+  "모든 상품이 '관심없음 ❌' 처리 되어 있습니다."
 export const ALERT_NO_MORE_RANDOM_PRODUCT_EXCEPT_CURRENT =
-  "해당 상품 외 모든 상품이 '관심 없는 상품'입니다."
+  "해당 상품 외 모든 상품이 '관심 없는 상품 ❌'입니다."
 
 //로컬스토리지 키 값
 export const WATCHED = 'watched'

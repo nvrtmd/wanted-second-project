@@ -9,6 +9,7 @@ import {
   ALERT_NO_MORE_RANDOM_PRODUCT,
   ALERT_NO_MORE_RANDOM_PRODUCT_EXCEPT_CURRENT,
 } from 'constant'
+import { BASE_URL } from 'config'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRandom } from '@fortawesome/free-solid-svg-icons'
 
@@ -21,7 +22,7 @@ class Product extends React.Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/Data/data.json')
+    fetch(BASE_URL)
       .then((response) => response.json())
       .then((response) => {
         this.setState({ wholeProducts: response })
