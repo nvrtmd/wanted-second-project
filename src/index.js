@@ -19,7 +19,7 @@ function timer() {
   setInterval(() => {
     const hours = new Date().getHours()
 
-    if (hours === 19) {
+    if (hours === 0) {
       isCorrectedTime = true
 
       if (isCorrectedTime && !isChecked) {
@@ -32,7 +32,7 @@ function timer() {
       isCorrectedTime = false
       isChecked = false
     }
-  }, 5000)
+  }, 1000 * 300)
 }
 
 timer()
