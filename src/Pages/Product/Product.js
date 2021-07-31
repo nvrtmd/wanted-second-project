@@ -57,6 +57,7 @@ class Product extends React.Component {
         }
         data[i] = newProduct
         localStorage.setItem('watched', JSON.stringify(data))
+        break
       }
     } //for
     return false
@@ -80,7 +81,7 @@ class Product extends React.Component {
     data = JSON.parse(localStorage.getItem('watched')) || []
 
     for (let i = 0; i < data.length; i++) {
-      if (data[i].index == index) {
+      if (data[i].index === index) {
         //조회 이력이 있다면
         const newDate = new Date()
         data[i].date = newDate
@@ -114,7 +115,7 @@ class Product extends React.Component {
       while (cnt < LIMIT + 1) {
         num = this.genRandomNumber()
         checkResult = this.checkRandomNumber(num)
-        if (checkResult == true) {
+        if (checkResult === true) {
           this.props.history.push(`/product/${num}`)
           return
         }
@@ -170,7 +171,6 @@ class Product extends React.Component {
             <span key={index}></span>
           )
         })}
-
         <NavBar />
       </>
     )
