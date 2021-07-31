@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import Item from '../../Components/Item/Item'
 import GetDataFromLocalStorage from '../../utils/GetDataFromLocalStorage'
 import { ReactComponent as SortImage } from '../../SvgImages/sort.svg'
-
 class RecentList extends React.Component {
   constructor() {
     super()
@@ -55,15 +54,31 @@ class RecentList extends React.Component {
     })
   }
 
+  moveToProductPage = ({ target }) => {
+    const idArr = []
+    const index = getClickedNodeId(target, idArr)
+
+    if (!index) return
+
+    const { items } = this.state
+    const { history } = this.props
+    const selectedItem = items.find((item) => item.index === index[0])
+
+    history.push({
+      pathname: `/product/${selectedItem.index}`,
+      state: selectedItem,
+    })
+  }
+
   render() {
     const { items, selectedBrands, selectedSorting, isSelectedHiding } =
       this.state
-    const menuLists = [...new Set(items.map((item) => item.brand))]
-    const selectedItems = items.filter((item) =>
+    const menuLists = [...new Set(items?.map((item) => item.brand))]
+    const selectedItems = items?.filter((item) =>
       selectedBrands.includes(item.brand)
     )
     const sortedItems =
-      selectedItems.length > 0
+      selectedItems?.length > 0
         ? selectedItems.sort((item1, item2) => {
             if (selectedSorting === '최근 조회순') {
               if (item1.date > item2.date) {
@@ -73,7 +88,7 @@ class RecentList extends React.Component {
               return item1.price - item2.price
             }
           })
-        : items.sort((item1, item2) => {
+        : items?.sort((item1, item2) => {
             if (selectedSorting === '최근 조회순') {
               if (item1.date > item2.date) {
                 return -1
@@ -83,7 +98,7 @@ class RecentList extends React.Component {
             }
           })
 
-    return (
+    return items ? (
       <RecentListWrapper>
         <Title>
           <h2>최근 조회한 상품</h2>
@@ -119,21 +134,42 @@ class RecentList extends React.Component {
           <span>관심 없는 상품 숨기기</span>
           <input type="checkbox" onChange={this.selectHiding} />
         </LikeFilter>
-        <ItemContainer>
+        <ItemContainer
+          onClick={this.moveToProductPage}
+          className="itemContainer"
+        >
           {isSelectedHiding
             ? sortedItems
                 .filter((item) => item.interest)
-                .map((item, index) => <Item key={index} item={item} />)
-            : sortedItems.map((item, index) => (
-                <Item key={index} item={item} />
-              ))}
+                .map((item) => <Item key={item.index} item={item} />)
+            : sortedItems.map((item) => <Item key={item.index} item={item} />)}
         </ItemContainer>
       </RecentListWrapper>
+    ) : (
+      <EmptyScreen>
+        <h1>조회한 상품이 존재하지 않습니다.</h1>
+      </EmptyScreen>
     )
   }
 }
 
 export default RecentList
+
+function getClickedNodeId(target, idArr) {
+  const limitNodeClassName = 'itemContainer'
+
+  if (target.classList.contains(limitNodeClassName)) {
+    return false
+  }
+
+  if (target.nodeName === 'LI') {
+    idArr.push(Number(target.id))
+    return idArr
+  }
+
+  getClickedNodeId(target.parentNode, idArr)
+  return idArr
+}
 
 const RecentListWrapper = styled.div`
   width: 100%;
@@ -234,4 +270,16 @@ const ItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`
+const EmptyScreen = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
+  h1 {
+    font-size: 40px;
+    font-weight: bold;
+  }
 `

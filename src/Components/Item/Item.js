@@ -3,9 +3,9 @@ import styled from 'styled-components'
 
 class Item extends React.Component {
   render() {
-    const { title, brand, price } = this.props.item
+    const { title, brand, price, index } = this.props.item
     return (
-      <ItemWrapper>
+      <ItemWrapper id={index}>
         <ItemTitle>{title}</ItemTitle>
         <ItemDetail>
           <span>{brand}</span>
@@ -26,6 +26,10 @@ const ItemWrapper = styled.li`
   border: 5px solid #2d3ff3;
   border-radius: 15px;
   background: #ffffff;
+
+  :hover {
+    cursor: pointer;
+  }
 `
 
 const ItemTitle = styled.h2`
