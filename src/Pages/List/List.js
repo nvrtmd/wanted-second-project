@@ -4,6 +4,7 @@ import Item from 'Components/Item/Item'
 import GetDataFromLocalStorage from 'utils/GetDataFromLocalStorage'
 import MoveAfterVisit from 'utils/MoveAfterVisit'
 import { FETCH_ERROR_MESSAGE, NOT_INTERESTED_MESSAGE } from 'constant'
+import { BASE_URL } from 'config'
 
 class List extends React.Component {
   constructor(props) {
@@ -13,7 +14,7 @@ class List extends React.Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/Data/data.json')
+    fetch(BASE_URL)
       .then((response) => response.json())
       .then((response) => {
         this.setState({ products: response })

@@ -6,6 +6,7 @@ import NavBar from './Components/NavBar/NavBar'
 import List from './Pages/List/List'
 import Product from './Pages/Product/Product'
 import RecentList from './Pages/RecentList/RecentList'
+import About from './Pages/About/About'
 class Routes extends React.Component {
   render() {
     return (
@@ -17,6 +18,7 @@ class Routes extends React.Component {
               <Route exact path={['/', '/list']} component={List} />
               <Route exact path="/product/:index" component={Product} />
               <Route exact path="/recentList" component={RecentList} />
+              <Route exact path="/about" component={About} />
             </Switch>
             <NavBar />
           </Container>
