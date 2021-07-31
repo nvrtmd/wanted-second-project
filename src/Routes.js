@@ -1,9 +1,10 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import styled from 'styled-components'
-import List from './Pages/List/List'
-import Product from './Pages/Product/Product'
-import RecentList from './Pages/RecentList/RecentList'
+import List from 'Pages/List/List'
+import Product from 'Pages/Product/Product'
+import RecentList from 'Pages/RecentList/RecentList'
+import About from 'Pages/About/About'
 
 const Root = styled.div`
   display: flex;
@@ -27,6 +28,7 @@ class Routes extends React.Component {
               <Route exact path={['/', '/list']} component={List} />
               <Route exact path="/product/:index" component={Product} />
               <Route exact path="/recentList" component={RecentList} />
+              <Route exact path="/about" component={About} />
             </Container>
           </Root>
         </Switch>

@@ -26,7 +26,7 @@ class NavBar extends React.Component {
   render() {
     return (
       <Root>
-        <Link to="/">
+        <Link to="/about">
           <Box>
             <MenuImg src="https://ifh.cc/g/GPTkLn.png" />
             <p>ABOUT</p>
