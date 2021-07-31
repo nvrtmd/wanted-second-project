@@ -1,14 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import Item from '../../Components/Item/Item'
-import GetDataFromLocalStorage from '../../utils/GetDataFromLocalStorage'
-import { ReactComponent as SortImage } from '../../SvgImages/sort.svg'
-import {
-  RECENT_ORDER,
-  ALERT_NOT_INTERESTING_PRODUCT,
-  WATCHED,
-} from '../../constant'
-import { PRODUCT_URL } from '../../config'
+import Item from 'Components/Item/Item'
+import GetDataFromLocalStorage from 'utils/GetDataFromLocalStorage'
+import { ReactComponent as SortImage } from 'SvgImages/sort.svg'
+import { RECENT_ORDER, ALERT_NOT_INTERESTING_PRODUCT, WATCHED } from 'constant'
+import { PRODUCT_URL } from 'config'
 class RecentList extends React.Component {
   constructor() {
     super()

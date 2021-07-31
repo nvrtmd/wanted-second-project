@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import Item from '../../Components/Item/Item'
-import SaveDataToLocalStorage from '../../utils/SaveDataToLocalStorage'
-import GetDataFromLocalStorage from '../../utils/GetDataFromLocalStorage'
-import MoveAfterVisit from '../../utils/MoveAfterVisit'
+import Item from 'Components/Item/Item'
+import SaveDataToLocalStorage from 'utils/SaveDataToLocalStorage'
+import GetDataFromLocalStorage from 'utils/GetDataFromLocalStorage'
+import MoveAfterVisit from 'utils/MoveAfterVisit'
 import {
   FETCH_ERROR_MESSAGE,
   NUM_OF_VISITABLE_PRODUCT,
