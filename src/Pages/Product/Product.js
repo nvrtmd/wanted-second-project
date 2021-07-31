@@ -5,35 +5,26 @@ import SaveDataToLocalStorage from 'utils/SaveDataToLocalStorage'
 import GetDataFromLocalStorage from 'utils/GetDataFromLocalStorage'
 import MoveAfterVisit from 'utils/MoveAfterVisit'
 import {
-  FETCH_ERROR_MESSAGE,
+  PRODUCT_LIST,
   NUM_OF_VISITABLE_PRODUCT,
   INTERESTED,
   PRODUCT_CNT_LIMIT,
   ALERT_NO_MORE_RANDOM_PRODUCT,
   ALERT_NO_MORE_RANDOM_PRODUCT_EXCEPT_CURRENT,
 } from 'constant'
-import { BASE_URL, PRODUCT_URL } from 'config'
+import { PRODUCT_URL } from 'config'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRandom } from '@fortawesome/free-solid-svg-icons'
 
 class Product extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { wholeProducts: [], products: [] }
+    this.state = { wholeProducts: PRODUCT_LIST, products: [] }
     this.addDislikeProduct = this.addDislikeProduct.bind(this)
     this.getRandomProduct = this.getRandomProduct.bind(this)
   }
 
   componentDidMount() {
-    fetch(BASE_URL)
-      .then((response) => response.json())
-      .then((response) => {
-        this.setState({ wholeProducts: response })
-      })
-      .catch(() => {
-        console.log(FETCH_ERROR_MESSAGE)
-      })
-
     if (
       !GetDataFromLocalStorage(NUM_OF_VISITABLE_PRODUCT) &&
       !GetDataFromLocalStorage(INTERESTED)
@@ -41,7 +32,7 @@ class Product extends React.Component {
       SaveDataToLocalStorage(NUM_OF_VISITABLE_PRODUCT, PRODUCT_CNT_LIMIT)
       SaveDataToLocalStorage(INTERESTED, PRODUCT_CNT_LIMIT)
     }
-  } //componentDidMount
+  }
 
   genRandomNumber() {
     const num = Math.floor(Math.random() * PRODUCT_CNT_LIMIT)
