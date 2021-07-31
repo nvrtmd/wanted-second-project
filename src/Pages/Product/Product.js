@@ -1,7 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import Header from '../../Components/Header/Header'
-import NavBar from '../../Components/NavBar/NavBar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRandom } from '@fortawesome/free-solid-svg-icons'
 
@@ -30,7 +28,7 @@ class Product extends React.Component {
   checkRandomNumber(num) {
     let data = []
     data = JSON.parse(localStorage.getItem('watched')) || []
-    console.log('checking ' + num)
+    // console.log('checking ' + num)
     for (let i = 0; i < data.length; i++) {
       if (data[i].index === num) {
         if (!data[i].interest) {
@@ -57,6 +55,7 @@ class Product extends React.Component {
         }
         data[i] = newProduct
         localStorage.setItem('watched', JSON.stringify(data))
+        break
       }
     } //for
     return false
@@ -64,7 +63,7 @@ class Product extends React.Component {
 
   //[관심없어요] 버튼 누를 시 동작
   addDislikeProduct(product, index) {
-    console.log(`add ${index} dislike`)
+    // console.log(`add ${index} dislike`)
     alert('해당 상품을 앞으로 다시 보지 않습니다.')
     // 랜덤 상품으로 이동
     let interestResult = this.setInterest(index)
@@ -80,7 +79,7 @@ class Product extends React.Component {
     data = JSON.parse(localStorage.getItem('watched')) || []
 
     for (let i = 0; i < data.length; i++) {
-      if (data[i].index == index) {
+      if (data[i].index === index) {
         //조회 이력이 있다면
         const newDate = new Date()
         data[i].date = newDate
@@ -114,7 +113,7 @@ class Product extends React.Component {
       while (cnt < LIMIT + 1) {
         num = this.genRandomNumber()
         checkResult = this.checkRandomNumber(num)
-        if (checkResult == true) {
+        if (checkResult === true) {
           this.props.history.push(`/product/${num}`)
           return
         }
@@ -138,7 +137,7 @@ class Product extends React.Component {
   render() {
     const { params } = this.props.match
     return (
-      <Container>
+      <>
         <PageTitle>상세 상품 페이지</PageTitle>
         {this.state.wholeProducts.map((product, index) => {
           return index === Number.parseInt(params.index) ? (
@@ -169,25 +168,21 @@ class Product extends React.Component {
             <span key={index}></span>
           )
         })}
-      </Container>
+      </>
     )
   }
 }
+
 const PageTitle = styled.div`
   margin-top: 30px;
   margin-left: 68px;
   font-size: 36px;
   font-weight: bold;
 `
-const Container = styled.div`
-  width: 768px;
-  margin: 0 auto;
-  background-color: white;
-`
 const ProductContainer = styled.div`
   width: 630px;
   margin: 0 auto;
-  margin-top: 272px;
+  margin-top: calc((100vh - 300px) / 4);
   padding: 52px 34px;
   border: 4px solid #2d3ff3;
   border-radius: 15px;

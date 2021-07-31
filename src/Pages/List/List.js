@@ -4,14 +4,6 @@ import Item from '../../Components/Item/Item'
 import SaveDataToLocalStorage from '../../utils/SaveDataToLocalStorage'
 import GetDataFromLocalStorage from '../../utils/GetDataFromLocalStorage'
 
-const ProductsList = styled.div`
-  width: 630px;
-  margin: 0 auto;
-`
-const Product = styled.div`
-  cursor: pointer;
-`
-
 class List extends React.Component {
   constructor(props) {
     super(props)
@@ -31,7 +23,6 @@ class List extends React.Component {
   }
 
   handleClick(product) {
-    console.log(product.index)
     let data = []
     // data = JSON.parse(localStorage.getItem('watched')) || []
     data = GetDataFromLocalStorage('watched') || []
@@ -45,11 +36,10 @@ class List extends React.Component {
             alert('관심 없는 상품입니다.')
             return
           } else {
-            // '관심 없음' 상품이 아니라면 덮어 씌워서 결과적으로 조회 시간 및 날짜 갱신
+            // '관심 없음' 상품이 아니라면 조회 시간 및 날짜 갱신
             // 상세 페이지로 이동
             console.log('갱신')
-            data[i] = product
-            // localStorage.setItem('watched', JSON.stringify(data))
+            data[i].date = product.date
             SaveDataToLocalStorage('watched', data)
             this.props.history.push({
               pathname: `/product/${product.index}`,
@@ -63,7 +53,7 @@ class List extends React.Component {
       // 해당 상품 정보 localstorage에 저장 및 상세 페이지로 이동
       console.log('조회이력없음')
       data.push(product)
-      localStorage.setItem('watched', JSON.stringify(data))
+      SaveDataToLocalStorage('watched', data)
       this.props.history.push({
         pathname: `/product/${product.index}`,
         state: { product },
@@ -71,9 +61,9 @@ class List extends React.Component {
       return
     }
     // localstorage 비어있다면
-    // 클릭한 상품 정보 localstorage에 저장 및 상세 페이지로 이동
+    // 클릭한 상품 정보 localstorage에 저장 및 상세 페이지로 이동 (index 및 날짜 정보 추가해서)
     data.push(product)
-    localStorage.setItem('watched', JSON.stringify(data))
+    SaveDataToLocalStorage('watched', data)
     this.props.history.push({
       pathname: `/product/${product.index}`,
       state: { product },
@@ -81,8 +71,16 @@ class List extends React.Component {
   }
 
   render() {
+    console.log(this.state.products)
     return (
       <>
+        <div
+          onClick={() => {
+            localStorage.clear()
+          }}
+        >
+          초기화
+        </div>
         <ProductsList>
           {this.state.products.map((product, index) => {
             return (
@@ -117,3 +115,11 @@ class List extends React.Component {
 }
 
 export default List
+
+const ProductsList = styled.div`
+  width: 630px;
+  margin: 0 auto;
+`
+const Product = styled.div`
+  cursor: pointer;
+`
