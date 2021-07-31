@@ -3,6 +3,12 @@ import styled from 'styled-components'
 import Item from '../../Components/Item/Item'
 import GetDataFromLocalStorage from '../../utils/GetDataFromLocalStorage'
 import { ReactComponent as SortImage } from '../../SvgImages/sort.svg'
+import {
+  RECENT_ORDER,
+  NOT_INTERESTING_PRODUCT_MESSAGE,
+  WATCHED,
+} from '../../constant'
+import { PRODUCT_URL } from '../../config'
 class RecentList extends React.Component {
   constructor() {
     super()
@@ -10,13 +16,15 @@ class RecentList extends React.Component {
     this.state = {
       items: [],
       selectedBrands: [],
-      selectedSorting: '최근 조회순',
+      selectedSorting: RECENT_ORDER,
       isSelectedHiding: false,
     }
+
+    this.optionRef = React.createRef()
   }
 
   componentDidMount() {
-    const itemData = GetDataFromLocalStorage('watched')
+    const itemData = GetDataFromLocalStorage(WATCHED)
 
     this.setState({
       items: itemData,
@@ -34,11 +42,18 @@ class RecentList extends React.Component {
 
   deleteSelectedBrand = ({ target: { name } }) => {
     const { selectedBrands } = this.state
-    if (!selectedBrands.includes(name)) return
 
-    this.setState({
-      selectedBrands: selectedBrands.filter((brand) => brand !== name),
-    })
+    this.setState(
+      {
+        selectedBrands: selectedBrands.filter((brand) => brand !== name),
+      },
+      () => {
+        if (!this.state.selectedBrands.length) {
+          const option = this.optionRef.current
+          option.selected = true
+        }
+      }
+    )
   }
 
   selectSorting = ({ target: { value } }) => {
@@ -73,12 +88,12 @@ class RecentList extends React.Component {
     if (!selectedItem) return
 
     if (!selectedItem.interest) {
-      alert('관심이 없는 상품입니다!')
+      alert(NOT_INTERESTING_PRODUCT_MESSAGE)
       return
     }
 
     history.push({
-      pathname: `/product/${selectedItem.index}`,
+      pathname: `${PRODUCT_URL}/${selectedItem.index}`,
       state: selectedItem,
     })
   }
@@ -93,7 +108,7 @@ class RecentList extends React.Component {
     const sortedItems =
       selectedItems?.length > 0
         ? selectedItems.sort((item1, item2) => {
-            if (selectedSorting === '최근 조회순') {
+            if (selectedSorting === RECENT_ORDER) {
               if (item1.date > item2.date) {
                 return -1
               }
@@ -102,7 +117,7 @@ class RecentList extends React.Component {
             }
           })
         : items?.sort((item1, item2) => {
-            if (selectedSorting === '최근 조회순') {
+            if (selectedSorting === RECENT_ORDER) {
               if (item1.date > item2.date) {
                 return -1
               }
@@ -120,16 +135,16 @@ class RecentList extends React.Component {
         </Title>
         <BrandFilter>
           <BrandMenu name="menus" onChange={this.selectBrand}>
-            <option>BRAND</option>
-            {menuLists.map((menu, index) => (
-              <option key={index} value={menu}>
+            <option ref={this.optionRef}>BRAND</option>
+            {menuLists.map((menu) => (
+              <option key={menu} value={menu}>
                 {menu}
               </option>
             ))}
           </BrandMenu>
           <SelectedBrand>
             {selectedBrands?.map((selectedBrand) => (
-              <Brand>
+              <Brand key={selectedBrand}>
                 <span>{selectedBrand}</span>
                 <button name={selectedBrand} onClick={this.deleteSelectedBrand}>
                   x
