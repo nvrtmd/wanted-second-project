@@ -3,29 +3,13 @@ import styled from 'styled-components'
 import Item from 'Components/Item/Item'
 import GetDataFromLocalStorage from 'utils/GetDataFromLocalStorage'
 import MoveAfterVisit from 'utils/MoveAfterVisit'
-import {
-  FETCH_ERROR_MESSAGE,
-  ALERT_NOT_INTERESTING_PRODUCT,
-  WATCHED,
-} from 'constant'
-import { BASE_URL } from 'config'
+import { PRODUCT_LIST, ALERT_NOT_INTERESTING_PRODUCT, WATCHED } from 'constant'
 
 class List extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { products: [] }
+    this.state = { products: PRODUCT_LIST }
     this.handleClick = this.handleClick.bind(this)
-  }
-
-  componentDidMount() {
-    fetch(BASE_URL)
-      .then((response) => response.json())
-      .then((response) => {
-        this.setState({ products: response })
-      })
-      .catch(() => {
-        console.log(FETCH_ERROR_MESSAGE)
-      })
   }
 
   handleClick(product) {

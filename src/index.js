@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import SaveDataToLocalStorage from './utils/SaveDataToLocalStorage'
 import Routes from './Routes'
 import GlobalStyle from './styles/GlobalStyle'
-
+import 'setupFirebase'
 ReactDOM.render(
   <>
     <GlobalStyle />
