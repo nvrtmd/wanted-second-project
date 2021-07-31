@@ -6,8 +6,10 @@ class About extends React.Component {
     return (
       <>
         <Container>
-          <h1>[Assignment 2] 미스터카멜</h1>
-          <Introduce>민유지, 백진수, 문태웅, 최혜린</Introduce>
+          <Title>[Assignment 2] 미스터카멜</Title>
+          <SubTitle>What Customers Like To View</SubTitle>
+          <Members>민유지🐥, 백진수😺, 문태웅🐻, 최혜린🐧</Members>
+          <div>21.07.29 - 21.07.31</div>
           <div>made with 💙</div>
         </Container>
       </>
@@ -22,15 +24,19 @@ const Container = styled.div`
   align-items: center;
   margin-top: 15vh;
   line-height: 50px;
-
-  h1 {
-    font-size: 30px;
-    font-weight: bold;
-  }
+`
+const Title = styled.div`
+  font-size: 40px;
+  font-weight: bold;
+`
+const SubTitle = styled.div`
+  font-size: 27px;
+  font-weight: bold;
 `
 
-const Introduce = styled.div`
-  font-size: 18px;
+const Members = styled.div`
+  font-size: 20px;
+  font-weight: 700;
 `
 
 export default About

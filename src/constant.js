@@ -1,3 +1,12 @@
+//constant.js
+
+//Data fetch error message
+export const FETCH_ERROR_MESSAGE =
+  'Failed to fetch data, please check your API or internet connection'
+
+//alert 메시지
+export const NOT_INTERESTED_MESSAGE = '❌ 관심 없는 상품입니다. ❌'
+
 //아이템 정렬 순서
 export const RECENT_ORDER = '최근 조회순'
 

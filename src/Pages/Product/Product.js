@@ -160,9 +160,10 @@ class Product extends React.Component {
 
 const PageTitle = styled.div`
   margin-top: 30px;
-  margin-left: 68px;
+  padding-left: 68px;
   font-size: 36px;
   font-weight: bold;
+  width: 100%;
 `
 
 const ButtonContainer = styled.div`
