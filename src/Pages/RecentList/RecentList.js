@@ -29,6 +29,7 @@ class RecentList extends React.Component {
 
   selectBrand = ({ target: { value } }) => {
     const { selectedBrands } = this.state
+    if (value === 'BRAND') return
     if (selectedBrands.includes(value)) return
 
     this.setState({
@@ -101,27 +102,21 @@ class RecentList extends React.Component {
     const selectedItems = items?.filter((item) =>
       selectedBrands.includes(item.brand)
     )
+    const sortCallBack = (item1, item2) => {
+      if (selectedSorting === RECENT_ORDER) {
+        if (item1.date > item2.date) {
+          return -1
+        }
+      } else {
+        return item1.price - item2.price
+      }
+    }
     const sortedItems =
       selectedItems?.length > 0
-        ? selectedItems.sort((item1, item2) => {
-            if (selectedSorting === RECENT_ORDER) {
-              if (item1.date > item2.date) {
-                return -1
-              }
-            } else {
-              return item1.price - item2.price
-            }
-          })
-        : items?.sort((item1, item2) => {
-            if (selectedSorting === RECENT_ORDER) {
-              if (item1.date > item2.date) {
-                return -1
-              }
-            } else {
-              return item1.price - item2.price
-            }
-          })
+        ? selectedItems.sort(sortCallBack)
+        : items?.sort(sortCallBack)
 
+    console.log(sortedItems)
     return items ? (
       <RecentListWrapper>
         <Title>
@@ -129,7 +124,9 @@ class RecentList extends React.Component {
         </Title>
         <BrandFilter>
           <BrandMenu name="menus" onChange={this.selectBrand}>
-            <option ref={this.optionRef}>BRAND</option>
+            <option ref={this.optionRef} value="BRAND">
+              BRAND
+            </option>
             {menuLists.map((menu) => (
               <option key={menu} value={menu}>
                 {menu}
