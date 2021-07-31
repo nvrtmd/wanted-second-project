@@ -49,9 +49,9 @@ class RecentList extends React.Component {
   }
 
   selectHiding = () => {
-    const { isClickedHiding } = this.state
+    const { isSelectedHiding } = this.state
     this.setState({
-      isClickedHiding: !isClickedHiding,
+      isSelectedHiding: !isSelectedHiding,
     })
   }
 
