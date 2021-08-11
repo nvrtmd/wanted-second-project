@@ -1,48 +1,58 @@
 import React from 'react'
 import styled from 'styled-components'
-import Item from 'Components/Item/Item'
+
 import GetDataFromLocalStorage from 'utils/GetDataFromLocalStorage'
-import MoveAfterVisit from 'utils/MoveAfterVisit'
+import MoveAfterPush from 'utils/MoveAfterPush'
+
+import Item from 'Components/Item/Item'
 import { PRODUCT_LIST, ALERT_NOT_INTERESTING_PRODUCT, WATCHED } from 'constant'
 
 class List extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { products: PRODUCT_LIST }
+    this.state = {
+      products: PRODUCT_LIST,
+      histories: GetDataFromLocalStorage(WATCHED),
+    }
     this.handleClick = this.handleClick.bind(this)
   }
 
+  isWatched(product) {
+    const watchedProduct =
+      this.state.histories?.find(
+        (history) => history.index === product.index
+      ) || null
+    return watchedProduct
+  }
+
+  deleteHistory(product) {
+    const newWatchedHistory = this.state.histories.filter((history) => {
+      return history !== product
+    })
+    console.log(newWatchedHistory)
+    return newWatchedHistory
+  }
+
+  MoveAfterAddToWatched(history, product, idx) {
+    history.push(product)
+    MoveAfterPush(history, `/product/${idx}`, this.props)
+  }
+
   handleClick(product) {
-    let data = []
-    data = GetDataFromLocalStorage(WATCHED) || []
-    if (data) {
-      // 상품 조회 이력이 존재한다면
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].index === product.index) {
-          // 이미 한 번 조회한 이력이 존재하는 상품이라면
-          if (data[i].interest === false) {
-            // '관심 없음' 상품이라면 alert
-            alert(ALERT_NOT_INTERESTING_PRODUCT)
-            return
-          } else {
-            // '관심 없음' 상품이 아니라면 조회 시간 및 날짜 갱신
-            // 상세 페이지로 이동
-            data[i].date = product.date
-            MoveAfterVisit(data, `/product/${product.index}`, this.props)
-            return
-          }
-        }
-      }
-      // 조회 이력이 없는 상품이라면
-      // 해당 상품 정보 LocalStorage에 저장(조회 처리) 및 상세 페이지로 이동
-      data.push(product)
-      MoveAfterVisit(data, `/product/${product.index}`, this.props)
+    const watchedProduct = this.isWatched(product)
+
+    if (!watchedProduct) {
+      this.MoveAfterAddToWatched(this.state.histories, product, product.index)
       return
     }
-    // LocalStorage 비어있다면
-    // 클릭한 상품 정보 LocalStorage에 저장(조회 처리) 및 상세 페이지로 이동 (index 및 날짜 정보 추가해서)
-    data.push(product)
-    MoveAfterVisit(data, `/product/${product.index}`, this.props)
+    if (watchedProduct?.interest) {
+      const newWatchedHistory = this.deleteHistory(watchedProduct)
+      this.MoveAfterAddToWatched(newWatchedHistory, product, product.index)
+      return
+    } else {
+      alert(ALERT_NOT_INTERESTING_PRODUCT)
+      return
+    }
   }
 
   render() {
