@@ -26,6 +26,10 @@ class Product extends React.Component {
 
   componentDidMount() {
     if (
+      // NUM_OF_VISITABLE_PRODUCT (방문 가능한 상품의 수를 값으로 가지는 key)
+      // INTERESTED (관심 있는 상품의 수 === 관심 없음 처리되지 않은 상품의 수)
+      // 만약 저 두 key:value 쌍이 LocalStorage에 존재하지 않으면,
+      // LocalStorage에 해당 데이터 쌍 저장
       !GetDataFromLocalStorage(NUM_OF_VISITABLE_PRODUCT) &&
       !GetDataFromLocalStorage(INTERESTED)
     ) {
@@ -40,24 +44,38 @@ class Product extends React.Component {
   }
 
   addDislikeProduct(index) {
+    // LocalStorage에서 키가 interested인 값을 가져와서 변수에 할당
     let interested = GetDataFromLocalStorage('interested')
     let data = []
+    // data에 조회한 상품 목록을 할당
     data = GetDataFromLocalStorage('watched') || []
+    // 조회 상품 목록 순회
     for (let i = 0; i < data.length; i++) {
       if (data[i].index === index && data[i].interest) {
+        // 만약 조회 상품 목록에서
+        // index가 관심 없음 처리한 상품의 index와 일치하고, interest가 true인 상품 발견하면
         data[i].interest = false
+        // 해당 상품의 interest를 false로 처리 후 LocalStorage에 저장
+        // 반복문 탈출
         SaveDataToLocalStorage('watched', data)
         break
       }
     }
     if (interested === 1) {
+      // interested가 1이면?
+      // 즉, 모든 상품이 다 관심 없음 처리 되고
+      // 관심있는 상품이 단 하나만 남아있으면
+      // 모든 상품이 관심 없음 처리 되었음을 알리며 main 화면으로 이동시킴
       alert(ALERT_NO_MORE_RANDOM_PRODUCT)
       this.props.history.push({
         pathname: `/`,
       })
       return
     }
+
+    // interested(관심 없음 처리되지 않은 상품의 수)에서 1을 뺀 뒤 LocalStorage에 저장
     SaveDataToLocalStorage('interested', interested - 1)
+    // random으로 상품 가져오는 함수 실행
     this.getRandomProduct()
   }
 
@@ -65,20 +83,26 @@ class Product extends React.Component {
     let numOfVisitableProduct = GetDataFromLocalStorage('numOfVisitableProduct')
     let interested = GetDataFromLocalStorage('interested')
 
+    // 만약 방문할 수 있는 상품의 수가 1개 이하라면
+    // random load 못하도록 message로 알린 후 return
     if (numOfVisitableProduct <= 1) {
       alert(ALERT_NO_MORE_RANDOM_PRODUCT_EXCEPT_CURRENT)
       return
     }
+    // 방문 가능한 상품의 수(key)에 관심 있는 상품의 수(value)를 할당 후 LocalStorage에 저장
     SaveDataToLocalStorage('numOfVisitableProduct', interested)
     let data = []
     data = GetDataFromLocalStorage('watched') || []
 
+    // 관심 있는 상품의 수가 1개 이상이면 반복
     outer: while (interested >= 1) {
       const randomNum = this.genRandomNumber()
       for (let i = 0; i < data.length; i++) {
         if (data[i].index === randomNum) {
+          // 만약 조회 상품 목록에서 randomNum과 상품의 index 값이 같은 상품을 발견하면
           if (data[i].interest === false) {
-            // randomNum을 index로 가지는 상품의 조회 내역 존재하며, 관심 없음 처리된 상품
+            // randomNum을 index로 가지는 상품의 조회 내역 존재하며, 관심 없음 처리된 상품이라면
+            // outer 반복문 다시 실행 (randomNum 생성부터 다시)
             continue outer
           } else if (
             data[i].interest &&

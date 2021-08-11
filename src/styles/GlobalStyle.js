@@ -4,10 +4,18 @@ import reset from 'styled-reset'
 const GlobalStyle = createGlobalStyle`
   ${reset}
 
+  @font-face {
+  font-family: 'GmarketSansLight';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
   * {
     box-sizing: border-box;
     padding: 0;
-    margin: 0;
+    margin: 0;  
+    /* font-family: 'GmarketSansLight'; */
   }
   
   body {
